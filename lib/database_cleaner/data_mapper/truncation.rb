@@ -65,6 +65,14 @@ module DataMapper
         yield
       end
 
+      private
+
+      # Returns a boolean indicating if the SQLite database is using the sqlite_sequence table.
+      def uses_sequence
+        select("SELECT name FROM sqlite_master WHERE type='table' " \
+               "AND name='sqlite_sequence';").length > 0
+      end
+
     end
 
     class SqliteAdapter < DataObjectsAdapter
@@ -92,6 +100,14 @@ module DataMapper
       # activerecord also doesn't do more here
       def disable_referential_integrity
         yield
+      end
+
+      private
+
+      # Returns a boolean indicating if the SQLite database is using the sqlite_sequence table.
+      def uses_sequence
+        select("SELECT name FROM sqlite_master WHERE type='table' " \
+               "AND name='sqlite_sequence';").length > 0
       end
 
     end
